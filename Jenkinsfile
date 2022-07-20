@@ -11,7 +11,7 @@ pipeline {
                 script {
                     withSonarQubeEnv(credentialsId: 'sonar-token') 
                     {
-						sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:RELEASE:sonar'
+						sh 'mvn verify sonar:sonar -Dsonar.login=admin -Dsonar.password=PhucYem1966#'
 					}
                 }
             }
