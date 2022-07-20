@@ -3,9 +3,10 @@ pipeline {
     stages {
         stage('Sonar check quality') {
             agent {
-            docker.withTool('docker'){
-                docker.withRegistry('repo','credentials') {
-                    image 'maven:3.8.1-adoptopenjdk-11'
+                docker.withTool('docker'){
+                    docker.withRegistry('repo','credentials') {
+                        image 'maven:3.8.1-adoptopenjdk-11'
+                    }
                 }
             }
             steps {
