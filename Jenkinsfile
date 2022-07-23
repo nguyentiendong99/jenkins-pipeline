@@ -1,10 +1,13 @@
 pipeline {
     agent any
+    environment{
+        VERSION = "${env.BUILD_ID}"
+    }
     stages {
         stage('Sonar check quality') {
             agent {
                 docker {
-                    image 'openjdk:11'
+                    image 'maven:3.8.1-adoptopenjdk-11'
                 }
             }
             steps {
@@ -20,6 +23,20 @@ pipeline {
                     //         }
                     //     }
                     // }
+                }
+            }
+        }
+        stage("docker build & docker push"){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_password')]) {
+                             sh '''
+                                docker build -t 192.168.49.1:8085//springapp:${VERSION} .
+                                docker login -u admin -p $docker_password 192.168.49.1:8085/
+                                docker push  192.168.49.1:8085//springapp:${VERSION}
+                                docker rmi 192.168.49.1:8085//springapp:${VERSION}
+                            '''
+                    }
                 }
             }
         }
