@@ -4,7 +4,7 @@ pipeline {
         stage('Sonar check quality') {
             agent {
                 docker {
-                    image 'maven:3.8.1-adoptopenjdk-11'
+                    image 'openjdk:11'
                 }
             }
             steps {
@@ -13,13 +13,13 @@ pipeline {
                     {
 						sh 'mvn verify sonar:sonar -Dsonar.login=admin -Dsonar.password=PhucYem1966#'
 					}
-                    timeout(time:1, unit: 'HOURS') {
-                        def qg = waitForQualityGate() {
-                            if(qg.status != 'OK') {
-                                error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                            }
-                        }
-                    }
+                    // timeout(time: 1, unit: 'HOURS') {
+                    //     def qg = waitForQualityGate() {
+                    //         if(qg.status != 'OK') {
+                    //             error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    //         }
+                    //     }
+                    // }
                 }
             }
         }
